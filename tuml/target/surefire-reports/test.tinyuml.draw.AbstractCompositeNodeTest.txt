@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: test.tinyuml.draw.AbstractCompositeNodeTest
+-------------------------------------------------------------------------------
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.979 sec

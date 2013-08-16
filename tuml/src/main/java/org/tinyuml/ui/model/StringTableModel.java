@@ -38,9 +38,14 @@ public class StringTableModel extends AbstractTableModel {
    * @param entry the entry to add
    */
   public void addEntry(String entry) {
-    int size = entries.size();
-    entries.add(entry);
-    fireTableRowsInserted(size, size);
+	//Solicitud B.!
+	//test: No agregar entries con nombre vacío.
+	
+	if(entry.isEmpty()) return; //no admitimos nombres vacíos.
+	  
+	int size = entries.size();
+	entries.add(entry);
+	fireTableRowsInserted(size, size);
   }
 
   /**
@@ -102,7 +107,13 @@ public class StringTableModel extends AbstractTableModel {
    */
   @Override
   public void setValueAt(Object value, int rowIndex, int columnIndex) {
-    entries.set(rowIndex, value.toString());
+	//Solicitud B.
+	//Si el nombre indicado es nulo, entonces en vez de modificarlo lo eliminamos
+	  
+	if(value.toString().isEmpty())
+	  removeEntryAt(rowIndex);
+	else
+      entries.set(rowIndex, value.toString());
   }
 
   /**

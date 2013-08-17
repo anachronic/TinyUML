@@ -31,9 +31,11 @@ import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,6 +46,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import org.tinyuml.draw.Label;
 import org.tinyuml.draw.LabelChangeListener;
 import org.tinyuml.model.UmlModel;
@@ -86,6 +89,9 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
   private transient Map<String, MethodCall> selectorMap =
     new HashMap<String, MethodCall>();
 
+  // Solitud D: Se necesita llevar cuenta de todos los DiagramEditor presentes
+  // para cada tab. Lo haremos con LinkedList
+  private LinkedList<DiagramEditor> diagramEditors;
 
   /**
    * Reset the transient values for serialization.
@@ -109,6 +115,9 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
    * Creates a new instance of AppFrame.
    */
   public AppFrame() {
+	// Solicitud D: debemos inicializar la lista enlazada de DiagramEditor
+	diagramEditors = new LinkedList<DiagramEditor>();
+	  
     setTitle(getResourceString("application.title"));
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     editorDispatcher = new EditorCommandDispatcher(this);
@@ -139,7 +148,13 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
    * @return the current editor
    */
   public DiagramEditor getCurrentEditor() {
-    return currentEditor;
+	// cambio Solicitud D: Pedimos el índice del nuevo tab
+	// y obtenemos el editor actual desde nuestra lista enlazada
+	// con el índice entregado
+	
+	int currentTabIndex = tabbedPane.getSelectedIndex();
+	
+    return diagramEditors.get(currentTabIndex);
   }
 
   /**
@@ -172,6 +187,11 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
     currentEditor.addAppCommandListener(editorDispatcher);
     currentEditor.addAppCommandListener(this);
     JScrollPane spane = new JScrollPane(currentEditor);
+    
+    // Solicitud D: debemos llevar la cuenta de todos los DiagramEditor
+    // en nuestra LinkedList (variable de I. diagramEditors)
+    diagramEditors.add(currentEditor);
+    
     JPanel editorPanel = new JPanel(new BorderLayout());
     spane.getVerticalScrollBar().setUnitIncrement(10);
     spane.getHorizontalScrollBar().setUnitIncrement(10);

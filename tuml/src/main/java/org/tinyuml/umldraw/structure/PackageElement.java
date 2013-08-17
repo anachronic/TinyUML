@@ -22,6 +22,7 @@ package org.tinyuml.umldraw.structure;
 import java.awt.Color;
 import java.awt.geom.Dimension2D;
 import java.util.List;
+
 import org.tinyuml.draw.AbstractCompositeNode;
 import org.tinyuml.draw.Compartment;
 import org.tinyuml.draw.DiagramElement;
@@ -242,7 +243,19 @@ implements LabelSource, UmlNode {
    */
   public boolean acceptsConnection(RelationType associationType,
     RelationEndType as, UmlNode with) {
-    return true;
+	// Solicitud A: Cuando se hace la verificación de si SOURCE es válido
+	// se entrega null. Arreglaremos esta cosa aceptando la conexión si
+	// la RelationEndType (as) es SOURCE
+	if(as == RelationEndType.SOURCE) return true;
+	
+	// Solicitud A: La herencia sólo se puede dar entre clases
+	if(associationType == RelationType.INHERITANCE)
+	  return false;
+	  
+	// Solicitud A: Packages se pueden relacionar entre sí
+	if(with instanceof PackageElement) return true;
+	
+    return false;
   }
 
   /**

@@ -311,7 +311,20 @@ implements LabelSource, UmlNode, UmlModelElementListener {
    */
   public boolean acceptsConnection(RelationType associationType,
     RelationEndType as, UmlNode with) {
-    return true;
+	// Solicitud A: Cuando se hace la verificación de si SOURCE es válido
+	// se entrega null. Arreglaremos esta cosa aceptando la conexión si
+	// la RelationEndType (as) es SOURCE
+	if(as == RelationEndType.SOURCE) return true;
+	  
+	// Solicitud A: Clases se pueden relacionar entre sí
+	if(with instanceof ClassElement) return true;
+	
+	// Solicitud A: La herencia sólo se puede dar entre clases
+	// esta verificación es un poco redundante con la anterior.. no?
+	if(associationType == RelationType.INHERITANCE && with instanceof ClassElement)
+	  return true;
+	
+    return false;
   }
 
   /**

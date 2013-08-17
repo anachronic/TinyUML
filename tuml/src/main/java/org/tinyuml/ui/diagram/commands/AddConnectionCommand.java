@@ -48,6 +48,9 @@ implements Command {
     this.parent = parent;
     element = elem;
     this.notification = editorNotification;
+    
+    // Debug println
+    System.out.println("Añadiendo conexión entre " + parent.toString() + " y " + elem.toString());
   }
 
   /**

@@ -389,7 +389,11 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
       StructureDiagram diagram = new StructureDiagram(umlModel);
       umlModel.addDiagram(diagram);
       diagram.setLabelText("Class diagram 1");
-      tabbedPane.removeAll();
+      
+      // Cambio Solicitud D: Veremos qué pasa si no removemos todo y en vez de eso
+      // solo agregamos un nuevo Tab
+      
+      /* tabbedPane.removeAll(); */
       createEditor(diagram);
     }
   }

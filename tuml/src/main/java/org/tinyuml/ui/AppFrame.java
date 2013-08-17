@@ -404,18 +404,18 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
    * Creates a new model.
    */
   public void newModel() {
-    if (canCreateNewModel()) {
-      umlModel = new UmlModelImpl();
-      StructureDiagram diagram = new StructureDiagram(umlModel);
-      umlModel.addDiagram(diagram);
-      diagram.setLabelText("Class diagram 1");
-      
-      // Cambio Solicitud D: Veremos qué pasa si no removemos todo y en vez de eso
-      // solo agregamos un nuevo Tab
-      
-      /* tabbedPane.removeAll(); */
-      createEditor(diagram);
-    }
+	// Solicitud D: No se requiere preguntar si se puede crear nuevo modelo
+	// Sólo debemos preguntar al cerrar los tabs (TODO?)
+    umlModel = new UmlModelImpl();
+    StructureDiagram diagram = new StructureDiagram(umlModel);
+    umlModel.addDiagram(diagram);
+    diagram.setLabelText("Class diagram 1");
+    
+    // Cambio Solicitud D: Veremos qué pasa si no removemos todo y en vez de eso
+    // solo agregamos un nuevo Tab
+  
+    /* tabbedPane.removeAll(); */
+    createEditor(diagram);
   }
 
   /**
@@ -423,6 +423,7 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
    * @return true the model can be created, false otherwise
    */
   private boolean canCreateNewModel() {
+	//TODO: Puede ser que no se necesite más el método canCreateNewModel
     if (currentEditor != null && currentEditor.canUndo()) {
       return JOptionPane.showConfirmDialog(this,
         ApplicationResources.getInstance().getString("confirm.new.message"),

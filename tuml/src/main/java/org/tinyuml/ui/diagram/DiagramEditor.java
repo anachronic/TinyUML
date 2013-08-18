@@ -66,6 +66,7 @@ import org.tinyuml.model.UmlClass;
 import org.tinyuml.ui.diagram.commands.ConvertConnectionTypeCommand;
 import org.tinyuml.util.AppCommandListener;
 import org.tinyuml.ui.diagram.commands.DeleteElementCommand;
+import org.tinyuml.ui.diagram.commands.PasteElementCommand;
 import org.tinyuml.ui.diagram.commands.MoveElementCommand;
 import org.tinyuml.ui.diagram.commands.ResizeElementCommand;
 import org.tinyuml.ui.diagram.commands.SetLabelTextCommand;
@@ -256,7 +257,13 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
    * Pastes into this diagram the handed Elements
    */
   public void pasteElement(Collection<DiagramElement> elements){
-	  
+	ArrayList<DiagramElement> clonedElements = new ArrayList<DiagramElement>();
+	
+	for(DiagramElement elem : elements){
+		clonedElements.add((DiagramElement)elem.clone());
+	}
+	
+	execute(new PasteElementCommand(this, clonedElements));
   }
 
   // *************************************************************************

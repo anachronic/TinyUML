@@ -260,7 +260,13 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 	ArrayList<DiagramElement> clonedElements = new ArrayList<DiagramElement>();
 	
 	for(DiagramElement elem : elements){
-		clonedElements.add((DiagramElement)elem.clone());
+		DiagramElement copia = (DiagramElement)elem.clone();
+		
+		// le cambiamos el parent al objeto clonado para poder ponerlo
+		// en este diagrama, pues puede venir de otro diagrama!
+		copia.setParent(getDiagram());
+		
+		clonedElements.add(copia);
 	}
 	
 	execute(new PasteElementCommand(this, clonedElements));

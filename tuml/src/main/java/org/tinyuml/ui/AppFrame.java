@@ -309,15 +309,18 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
    */
   public void selectionStateChanged() {
     boolean hasSelection = getCurrentEditor().getSelectedElements().size() > 0;
-    /*
+    
+    // Solicitud E: Veremos qué pasa si habilitamos los Items del menú
+    // aunque no tengan ningún comando asociado.
+    
     menumanager.enableMenuItem("CUT", hasSelection);
     menumanager.enableMenuItem("COPY", hasSelection);
-     */
+    
     menumanager.enableMenuItem("DELETE", hasSelection);
-    /*
+    
     toolbarmanager.enableButton("CUT", hasSelection);
     toolbarmanager.enableButton("COPY", hasSelection);
-     */
+    
     toolbarmanager.enableButton("DELETE", hasSelection);
   }
 

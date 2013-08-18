@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -48,6 +49,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.tinyuml.draw.Label;
+import org.tinyuml.draw.DiagramElement;
 import org.tinyuml.draw.LabelChangeListener;
 import org.tinyuml.model.UmlModel;
 import org.tinyuml.util.AppCommandListener;
@@ -92,6 +94,10 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
   // Solitud D: Se necesita llevar cuenta de todos los DiagramEditor presentes
   // para cada tab. Lo haremos con LinkedList
   private LinkedList<DiagramEditor> diagramEditors;
+  
+  // Solicitud E: Variable de instancia que lleve cuenta de los elementos
+  // que fueron copiados.
+  private Collection<DiagramElement> lastCopiedElements;
 
   /**
    * Reset the transient values for serialization.
@@ -117,6 +123,9 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
   public AppFrame() {
 	// Solicitud D: debemos inicializar la lista enlazada de DiagramEditor
 	diagramEditors = new LinkedList<DiagramEditor>();
+	
+	// Solicitud E: al principio no existen elementos copiados.
+	lastCopiedElements = null;
 	  
     setTitle(getResourceString("application.title"));
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -343,8 +352,19 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
         getClass().getMethod("save")));
       selectorMap.put("EXPORT_GFX", new MethodCall(
         getClass().getMethod("exportGfx")));
+      
+      // Solicitud E: Para implementar cut, copy y paste hay que
+      // tener listeners!
+      selectorMap.put("CUT", new MethodCall(
+    	getClass().getMethod("cut")));
+      selectorMap.put("COPY", new MethodCall(
+    	getClass().getMethod("copy")));
+      selectorMap.put("PASTE", new MethodCall(
+        getClass().getMethod("paste")));
+      
+      
       selectorMap.put("DELETE", new MethodCall(
-        getClass().getMethod("delete")));
+    	getClass().getMethod("delete")));
       selectorMap.put("EDIT_SETTINGS", new MethodCall(
         getClass().getMethod("editSettings")));
       selectorMap.put("QUIT", new MethodCall(
@@ -604,6 +624,36 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
       setTitle(ApplicationResources.getInstance()
         .getString("application.title"));
     }
+  }
+  
+  /**
+   * 
+   */
+  public void cut(){
+	  
+  }
+  
+  /**
+   * Keeps track of the last copied elements (the ones selected when
+   * Ctrl+C was used).
+   * Creado para cumplir con la solicitud E de la tarea.
+   */
+  public void copy(){
+	  boolean hasSelection = getCurrentEditor().getSelectedElements().size() > 0;
+	  
+	  if(hasSelection)
+	    lastCopiedElements = getCurrentEditor().getSelectedElements();
+	  
+	  //adicionalmente, hay que habilitar el botón PASTE!
+	  menumanager.enableMenuItem("PASTE", hasSelection);
+	  toolbarmanager.enableButton("PASTE", hasSelection);
+  }
+  
+  /**
+   * 
+   */
+  public void paste(){
+	  
   }
 
   /**

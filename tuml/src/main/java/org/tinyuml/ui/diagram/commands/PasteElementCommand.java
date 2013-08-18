@@ -1,6 +1,4 @@
 /**
- * Copyright 2007 Wei-ju Wu
- *
  * This file is part of TinyUML.
  *
  * TinyUML is free software; you can redistribute it and/or modify
@@ -30,9 +28,9 @@ import org.tinyuml.draw.Node;
 import org.tinyuml.util.Command;
 
 /**
- * A command class to remove elements from a diagram.
+ * A command class to paste elements to a diagram.
  *
- * @author Wei-ju Wu
+ * @author Nicolás Salas V.
  * @version 1.0
  */
 public class PasteElementCommand extends AbstractUndoableEdit
@@ -80,15 +78,16 @@ implements Command {
    * {@inheritDoc}
    */
   public void run() {
-    for (DiagramElement element : elements) {
-      if (element instanceof Connection) {
-        detachConnectionFromNodes((Connection) element);
-      } else if (element instanceof Node) {
-        detachNodeConnections((Node) element);
-      }
-      element.getParent().removeChild(element);
-      notification.notifyElementRemoved(element);
-    }
+	  for (ParentChildRelation relation : parentChildRelations) {
+	    if (relation.element instanceof Connection) {
+	      reattachConnectionToNodes((Connection) relation.element);
+	    } else if (relation.element instanceof Node) {
+	      reattachNodeConnections((Node) relation.element);
+	    }
+	    relation.parent.addChild(relation.element);
+	    notification.notifyElementAdded(relation.element);
+	  }
+    
   }
 
   /**
@@ -106,14 +105,14 @@ implements Command {
   @Override
   public void undo() {
     super.undo();
-    for (ParentChildRelation relation : parentChildRelations) {
-      if (relation.element instanceof Connection) {
-        reattachConnectionToNodes((Connection) relation.element);
-      } else if (relation.element instanceof Node) {
-        reattachNodeConnections((Node) relation.element);
+    for (DiagramElement element : elements) {
+      if (element instanceof Connection) {
+        detachConnectionFromNodes((Connection) element);
+      } else if (element instanceof Node) {
+        detachNodeConnections((Node) element);
       }
-      relation.parent.addChild(relation.element);
-      notification.notifyElementAdded(relation.element);
+      element.getParent().removeChild(element);
+      notification.notifyElementRemoved(element);
     }
   }
 

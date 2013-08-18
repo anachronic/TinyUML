@@ -165,6 +165,15 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
 	
     return diagramEditors.get(currentTabIndex);
   }
+  
+  /**
+   * Returns the last collection of items ready to copy.
+   * Implementado para cumplir con la solicitud E de la tarea.
+   * @return Collection of items ready to copy
+   */
+  public Collection<DiagramElement> getElementsToCopy(){
+	  return lastCopiedElements;
+  }
 
   /**
    * Returns the menu manager.
@@ -627,10 +636,20 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
   }
   
   /**
+   * Performs the action of Cutting an element from the diagram.
+   * This means it will save the current selected elements and
+   * delete them from the current diagram.
    * 
+   * Hecho para la solicitud E de la tarea.
    */
   public void cut(){
+	  copy();
+	  delete();
 	  
+	  // Note que después de efectuar ésta acción el focus desaparece
+	  // por lo tanto hay que volver a verificar qué botones se pueden
+	  // presionar
+	  selectionStateChanged();
   }
   
   /**

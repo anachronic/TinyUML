@@ -669,10 +669,10 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
   }
   
   /**
-   * 
+   * Pastes into the current diagram the latest elements copied.
    */
   public void paste(){
-	  
+	getCurrentEditor().pasteElement(lastCopiedElements);
   }
 
   /**

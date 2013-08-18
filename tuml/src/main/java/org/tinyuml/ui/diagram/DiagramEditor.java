@@ -251,6 +251,13 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
     Collection<DiagramElement> elements = getSelectedElements();
     execute(new DeleteElementCommand(this, elements));
   }
+  
+  /**
+   * Pastes into this diagram the handed Elements
+   */
+  public void pasteElement(Collection<DiagramElement> elements){
+	  
+  }
 
   // *************************************************************************
   // ***** Drawing the component

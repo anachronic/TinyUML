@@ -67,7 +67,7 @@ implements Command {
    * @param aNotification the DiagramEditorNotification object
    * @param theElements the DiagramElements to remove, each must have a parent
    */
-  public DeleteElementCommand(DiagramEditorNotification aNotification,
+  public PasteElementCommand(DiagramEditorNotification aNotification,
     Collection<DiagramElement> theElements) {
     notification = aNotification;
     elements = theElements;

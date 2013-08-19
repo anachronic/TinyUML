@@ -47,7 +47,6 @@ public class DrawingContextImpl implements DrawingContext {
 
   private Graphics2D g2d;
   private DrawingShapeFactory shapeFactory = DrawingShapeFactory.getInstance();
-  private Color gridColor = new Color(230, 230, 230);
   private Rectangle bounds = new Rectangle();
 
   /**
@@ -72,7 +71,7 @@ public class DrawingContextImpl implements DrawingContext {
    * {@inheritDoc}
    */
   public void drawGridLine(double x0, double y0, double x1, double y1) {
-    g2d.setColor(gridColor);
+    // g2d.setColor(gridColor);
     g2d.setStroke(shapeFactory.createGridStroke());
     g2d.draw(shapeFactory.createLine2d(x0, y0, x1, y1));
   }
@@ -184,4 +183,11 @@ public class DrawingContextImpl implements DrawingContext {
    * {@inheritDoc}
    */
   public Graphics2D getGraphics2D() { return g2d; }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void setColor(Color color) {
+	g2d.setColor(color);
+  }
 }

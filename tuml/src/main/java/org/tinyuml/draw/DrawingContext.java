@@ -171,4 +171,10 @@ public interface DrawingContext {
    * @return the Graphics2D object
    */
   Graphics2D getGraphics2D();
+  
+  /**
+   * Changes the current Graphics2D (g2d) color
+   * Implementado para la solicitud C de la tarea.
+   */
+  void setColor(Color color);
 }

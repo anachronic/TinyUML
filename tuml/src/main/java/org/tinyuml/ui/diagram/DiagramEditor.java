@@ -36,7 +36,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -44,6 +46,7 @@ import javax.swing.KeyStroke;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
+
 import org.tinyuml.draw.Connection;
 import org.tinyuml.model.RelationType;
 import org.tinyuml.draw.DiagramOperations;
@@ -257,7 +260,9 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
    * Pastes into this diagram the handed Elements
    */
   public void pasteElement(Collection<DiagramElement> elements){
-	ArrayList<DiagramElement> clonedElements = new ArrayList<DiagramElement>();
+	// este hash asocia cada elemento de "elements" con su clon
+	HashMap<DiagramElement, DiagramElement> clonedElements =
+			new HashMap<DiagramElement, DiagramElement>();
 	
 	for(DiagramElement elem : elements){
 		DiagramElement copia = (DiagramElement)elem.clone();
@@ -266,10 +271,29 @@ DiagramEditorNotification, DiagramOperations, NodeChangeListener {
 		// en este diagrama, pues puede venir de otro diagrama!
 		copia.setParent(getDiagram());
 		
-		clonedElements.add(copia);
+		clonedElements.put(elem, copia);
 	}
 	
-	execute(new PasteElementCommand(this, clonedElements));
+	// hasta aquí tengo el hash de cada objeto con su clon (del nuevo diagrama)
+	// ahora debo iterar por cada Connection en elements y rehacer sus conexiones
+	// tomaré el ejemplo desde PasteElementCommand.
+	for(DiagramElement elem : elements){
+		if(elem instanceof Connection){
+			Connection currentConnection = (Connection)elem;
+			Connection newConnection = (Connection)clonedElements.get(currentConnection);
+			
+			Node originalNode1 = currentConnection.getNode1();
+			Node originalNode2 = currentConnection.getNode2();
+			
+			newConnection.setNode1((Node)clonedElements.get(originalNode1));
+			newConnection.setNode2((Node)clonedElements.get(originalNode2));
+			
+			newConnection.getNode1().addConnection(newConnection);
+			newConnection.getNode2().addConnection(newConnection);
+		}
+	}
+	
+	execute(new PasteElementCommand(this, clonedElements.values()));
   }
 
   // *************************************************************************

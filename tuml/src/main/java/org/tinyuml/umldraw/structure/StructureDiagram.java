@@ -63,7 +63,7 @@ implements NodeChangeListener, LabelSource, Diagram {
   private static final int ADDITIONAL_SPACE_RIGHT = 30;
   private static final int ADDITIONAL_SPACE_BOTTOM = 30;
 
-  private int gridSize = 6;
+  private int gridSize = 5;
   private String name;
   private List<Connection> connections = new ArrayList<Connection>();
   private Label nameLabel = new SimpleLabel();

@@ -63,8 +63,7 @@ implements NodeChangeListener, LabelSource, Diagram {
   private static final int ADDITIONAL_SPACE_RIGHT = 30;
   private static final int ADDITIONAL_SPACE_BOTTOM = 30;
 
-  private int gridSize = 7;
-  private int subGridSize = 2; // tamaño del subgrid. (Solicitud C)
+  private int gridSize = 6;
   private String name;
   private List<Connection> connections = new ArrayList<Connection>();
   private Label nameLabel = new SimpleLabel();
@@ -272,12 +271,6 @@ implements NodeChangeListener, LabelSource, Diagram {
    * @return the drawing grid size
    */
   private double getDrawGridSize() { return gridSize * 5; }
-  
-  /**
-   * Returns the drawing subgrid size.
-   * @return the drawing subgrid size
-   */
-  private double getDrawSubGridSize() { return subGridSize * 5; }
 
   /**
    * Draws the background of the diagram.
@@ -309,7 +302,7 @@ implements NodeChangeListener, LabelSource, Diagram {
    * @param drawingContext the DrawingContext
    */
   private void drawGrid(DrawingContext drawingContext) {
-    // we draw the subgrid after the main grid
+    // we draw the subgrid before the main grid
     // (solicitud C)
     drawSubGrid(drawingContext);
     

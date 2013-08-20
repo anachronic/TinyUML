@@ -544,7 +544,7 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
    * Opens a TinyUML model.
    */
   public void openModel() {
-    if (canOpen()) {
+    //if (canOpen()) {
       JFileChooser fileChooser = new JFileChooser();
       fileChooser.setDialogTitle(getResourceString("dialog.openmodel.title"));
       fileChooser.addChoosableFileFilter(createModelFileFilter());
@@ -552,7 +552,7 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
         try {
           currentFile = fileChooser.getSelectedFile();
           umlModel = ModelReader.getInstance().readModel(currentFile);
-          tabbedPane.removeAll();
+          //tabbedPane.removeAll();
           createEditor((StructureDiagram) umlModel.getDiagrams().get(0));
           updateFrameTitle();
         } catch (IOException ex) {
@@ -561,7 +561,7 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
             JOptionPane.ERROR_MESSAGE);
         }
       }
-    }
+    //}
   }
 
   /**

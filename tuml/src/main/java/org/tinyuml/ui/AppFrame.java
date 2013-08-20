@@ -219,6 +219,7 @@ implements EditorStateListener, AppCommandListener, SelectionListener {
     editorPanel.add(spane, BorderLayout.CENTER);
     editorPanel.add(toolbar, BorderLayout.NORTH);
     final Component comp = tabbedPane.add(diagram.getLabelText(), editorPanel);
+    tabbedPane.setSelectedIndex(diagramEditors.size()-1);
     diagram.addNameLabelChangeListener(new LabelChangeListener() {
       /** {@inheritDoc} */
       public void labelTextChanged(Label label) {
